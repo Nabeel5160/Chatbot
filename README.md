@@ -271,4 +271,4 @@ pytest -q
 
 ### Deploy (free hosting)
 
-See **[DEPLOY.md](./DEPLOY.md)** for Render (API) + Netlify (frontend), `VITE_API_BASE_URL`, and CORS. **URLs are created on your dashboard** after you connect Git and deploy; this repo cannot generate them for you.
+See **[DEPLOY.md](./DEPLOY.md)** for **Render (API)** + **Vercel or Netlify (frontend)**, `VITE_API_BASE_URL`, and CORS. The UI is configured for [GitHub `Nabeel5160/Chatbot`](https://github.com/Nabeel5160/Chatbot). **URLs are created on your dashboard** after you connect Git and deploy; this repo cannot generate them for you.

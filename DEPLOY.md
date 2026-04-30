@@ -3,13 +3,15 @@
 Canonical GitHub repo: **[https://github.com/Nabeel5160/Chatbot](https://github.com/Nabeel5160/Chatbot)**  
 Clone: `git clone https://github.com/Nabeel5160/Chatbot.git`
 
-This repo cannot be deployed for you from Cursor: **you** create the accounts and paste the URLs you get (for example `https://ogdcl-rag-api.onrender.com` and `https://your-site.netlify.app`).
+This repo cannot be deployed for you from Cursor: **you** create the accounts; your live URLs appear in each provider’s dashboard (for example `https://ogdcl-rag-api.onrender.com` and `https://your-app.vercel.app`).
 
-Recommended split: **API on Render (Docker)** · **static UI on Netlify or Cloudflare Pages**.
+**Important:** The **Python API (FastAPI + Chroma + OpenAI)** is a long-running web service with a writable disk for the vector DB. **Vercel is for the React frontend only** ([Vercel](https://vercel.com) is ideal for static/Vite apps). Run the API on **Render**, **Railway**, or **Fly.io**, then point the UI at it with `VITE_API_BASE_URL`.
+
+Recommended split: **API on Render (Docker)** · **UI on Vercel** (or Netlify / Cloudflare Pages).
 
 ---
 
-## 1) Backend (Render)
+## 1) Backend (Render) — required for full chat
 
 1. Use the GitHub repo above (include `ChatbotDocument.txt` in the default branch if you want the corpus baked into the Docker image).
 2. Go to [render.com](https://render.com) → **New +** → **Web Service** → connect **`Nabeel5160/Chatbot`**.
@@ -23,7 +25,42 @@ Recommended split: **API on Render (Docker)** · **static UI on Netlify or Cloud
 
 ---
 
-## 2) Frontend (Netlify)
+## 2) Frontend (Vercel) — recommended with this repo
+
+Repo: **[Nabeel5160/Chatbot on GitHub](https://github.com/Nabeel5160/Chatbot)**
+
+### A) Connect Git (dashboard)
+
+1. Sign in at [vercel.com](https://vercel.com) → **Add New…** → **Project** → **Import** the GitHub repo **`Nabeel5160/Chatbot`**.
+2. Under **Root Directory**, click **Edit** and set it to **`frontend`** (this folder contains `package.json` and `vite.config.ts`).
+3. **Framework Preset:** Vite (auto-detected).
+4. **Build & Output Settings:** leave defaults (`npm run build`, output `dist`).
+5. **Environment Variables** (Production — required before the first successful build that talks to your API):
+
+   | Name | Value (example) |
+   |------|------------------|
+   | `VITE_API_BASE_URL` | `https://YOUR-SERVICE.onrender.com` |
+
+   Use your **Render API URL** with **no** trailing slash.
+
+6. Click **Deploy**. Vercel will show a URL like **`https://chatbot-xxx.vercel.app`** — that is your **public frontend**.
+
+### B) CORS on the API
+
+On Render, set `CORS_ORIGINS` to your exact Vercel URL, e.g. `https://chatbot-xxx.vercel.app` (or comma-separate preview + production URLs). Redeploy the API after changing env vars.
+
+### C) Optional: GitHub Actions → Vercel
+
+If you use the workflow **`.github/workflows/deploy-vercel-frontend.yml`**, add these **repository secrets** in GitHub → **Settings** → **Secrets and variables** → **Actions**:
+
+- `VERCEL_TOKEN` — from Vercel → Account → **Tokens**
+- `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` — run `npx vercel link` once in `frontend/` locally, or copy from the Vercel project **Settings → General**.
+
+`VITE_API_BASE_URL` must still be set in the **Vercel** project environment for Production builds.
+
+---
+
+## 3) Frontend (Netlify)
 
 1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git** → pick **`Nabeel5160/Chatbot`**.
 2. Set:
@@ -38,27 +75,27 @@ Netlify will assign a URL like `https://random-name-123.netlify.app`. Use that a
 
 ---
 
-## 3) CORS
+## 4) CORS
 
 If the browser blocks requests, set on the **API** host:
 
-`CORS_ORIGINS=https://your-site.netlify.app`
+`CORS_ORIGINS=https://your-site.vercel.app` or `https://your-site.netlify.app`
 
 (match exactly, including `https://`). Then restart the API service.
 
 ---
 
-## Alternatives
+## 5) Alternatives
 
 - **Railway / Fly.io:** also support Docker; set `PORT` if the platform injects it (Render does; the `Dockerfile` respects `PORT`).
 - **Cloudflare Pages:** same as Netlify: build `frontend`, set `VITE_API_BASE_URL` to the API origin.
 
 ---
 
-## After deploy
+## 6) After deploy
 
 1. Open the **frontend URL**.
 2. Run **Upload & Index** once (or call `POST /upload` on the API) so Chroma is populated on that host.
 3. Ask a question.
 
-Your live URLs are always the ones shown in the **Render** and **Netlify** (or Pages) dashboards after you deploy.
+Your live URLs are always the ones shown in the **Render** and **Vercel** / **Netlify** dashboards after you deploy.
