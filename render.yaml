@@ -1,0 +1,16 @@
+# https://render.com — connect GitHub repo https://github.com/Nabeel5160/Chatbot
+# Set OPENAI_API_KEY (and other .env vars) in the Render dashboard.
+services:
+  - type: web
+    name: ogdcl-rag-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: OPENAI_API_KEY
+        sync: false

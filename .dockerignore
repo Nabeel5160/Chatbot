@@ -1,0 +1,11 @@
+.venv
+__pycache__
+.git
+.pytest_cache
+.cursor
+chroma_db
+frontend/node_modules
+frontend/dist
+*.pyc
+.env
+agent-transcripts

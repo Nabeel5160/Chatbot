@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  font-family: Inter, 'Segoe UI', system-ui, sans-serif;
+  background: radial-gradient(circle at 15% 10%, #223f88, #090b14 45%, #05060d);
+  color: #eef3ff;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+}

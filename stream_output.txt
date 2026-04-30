@@ -1,0 +1,1 @@
+﻿{"detail":"OPENAI_API_KEY is not configured."}

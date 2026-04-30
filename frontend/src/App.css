@@ -1,0 +1,173 @@
+.app-shell {
+  width: min(1300px, calc(100vw - 2rem));
+  margin: 1rem auto;
+  min-height: calc(100vh - 2rem);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1rem;
+}
+
+.scene-panel,
+.chat-panel {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.25rem;
+  background: linear-gradient(170deg, rgba(20, 25, 43, 0.9), rgba(10, 10, 15, 0.86));
+  box-shadow: 0 0 0 1px rgba(77, 102, 255, 0.18), 0 24px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.scene-panel {
+  position: relative;
+  min-height: 640px;
+}
+
+.scene-overlay {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  backdrop-filter: blur(8px);
+  background: rgba(4, 6, 18, 0.6);
+  border: 1px solid rgba(117, 153, 255, 0.3);
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+}
+
+.scene-overlay h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #f1f6ff;
+}
+
+.scene-overlay p {
+  margin: 0.4rem 0 0;
+  color: #9ab4ff;
+}
+
+.chat-panel {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-header h2 {
+  margin: 0;
+  color: #f1f6ff;
+}
+
+.status-chip {
+  font-size: 0.8rem;
+  color: #8df3cc;
+  background: rgba(78, 250, 186, 0.12);
+  border: 1px solid rgba(78, 250, 186, 0.4);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+}
+
+.upload-form,
+.ask-form {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.session-row {
+  font-size: 0.9rem;
+  color: #c3d5ff;
+  display: grid;
+  gap: 0.4rem;
+}
+
+input,
+textarea,
+button {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(146, 180, 255, 0.35);
+  background: rgba(18, 28, 53, 0.7);
+  color: #f4f7ff;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(110deg, #4b8dff, #7d5bff);
+  border: none;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.messages {
+  flex: 1;
+  min-height: 260px;
+  max-height: 340px;
+  overflow-y: auto;
+  border: 1px solid rgba(146, 180, 255, 0.25);
+  border-radius: 1rem;
+  background: rgba(10, 17, 34, 0.7);
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.bubble {
+  border-radius: 0.9rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(146, 180, 255, 0.25);
+}
+
+.bubble.user {
+  background: rgba(72, 138, 255, 0.2);
+}
+
+.bubble.assistant {
+  background: rgba(125, 91, 255, 0.2);
+}
+
+.bubble strong {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.bubble p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.source-box {
+  border: 1px solid rgba(146, 180, 255, 0.25);
+  border-radius: 1rem;
+  background: rgba(7, 14, 30, 0.7);
+  padding: 0.8rem;
+}
+
+.source-box h3 {
+  margin: 0 0 0.5rem;
+  color: #d8e3ff;
+}
+
+.source-box ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #c6d8ff;
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-panel {
+    min-height: 420px;
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "question": "What was Coca-Cola revenue in 2024?",
+    "expected_pages": [12, 14]
+  },
+  {
+    "question": "What key risks did the company highlight?",
+    "expected_pages": [30, 31]
+  },
+  {
+    "question": "How did operating income trend in 2024?",
+    "expected_pages": [15, 16]
+  }
+]

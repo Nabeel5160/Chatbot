@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+langchain
+langchain-text-splitters
+langchain-openai
+langchain-chroma
+langchain-community
+pypdf
+pydantic
+pydantic-settings
+python-dotenv
+python-multipart
+chromadb
+requests
+streamlit
+pytest
