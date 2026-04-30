@@ -149,7 +149,31 @@ If the browser blocks requests, set on the **API** host:
 
 ---
 
-## 6) After deploy
+## 6) Temporary public URL with ngrok (local PC)
+
+Use this when you want to demo from your own machine and allow access from outside your local network, without deploying.
+
+1. Install ngrok from [ngrok.com/download](https://ngrok.com/download).
+2. Authenticate once:
+
+   `ngrok config add-authtoken <your_token>`
+
+3. From repo root, run:
+
+   `powershell -ExecutionPolicy Bypass -File .\scripts\run_ngrok_dev.ps1`
+
+4. Share the printed `https://...ngrok-free.app` URL.
+
+This script starts FastAPI (`:8000`), Vite (`:5173`), and opens ngrok only for the frontend port. Vite proxies `/api/*` to local FastAPI, so one ngrok URL serves both UI + API calls.
+
+Notes:
+- Keep the script window open; stopping it closes the tunnel.
+- Free ngrok URLs usually change each run.
+- For long-term stable public access, use Render + Pages/Vercel/Netlify above.
+
+---
+
+## 7) After deploy
 
 1. Open the **frontend URL**.
 2. Run **Upload & Index** once (or call `POST /upload` on the API) so Chroma is populated on that host.

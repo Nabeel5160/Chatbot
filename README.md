@@ -270,6 +270,28 @@ CI behavior:
 pytest -q
 ```
 
+### Outside-Network Access with ngrok (local machine)
+
+If you want people outside your Wi-Fi/LAN to access your running local app, use this helper script:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_ngrok_dev.ps1
+```
+
+What it does:
+- Starts FastAPI on `http://127.0.0.1:8000`
+- Starts Vite frontend on `http://127.0.0.1:5173`
+- Opens an ngrok tunnel for the frontend and prints a public `https://...ngrok-free.app` URL
+
+Share only the printed ngrok URL. API calls are proxied through Vite (`/api`) to your local backend, so one public URL is enough.
+
+Prerequisites:
+- Install ngrok and set token once:
+
+```powershell
+ngrok config add-authtoken <your_token>
+```
+
 ### Deploy (free hosting)
 
 See **[DEPLOY.md](./DEPLOY.md)** for **Render (API)** + **GitHub Pages**, **Vercel**, or **Netlify** (frontend), `VITE_API_BASE_URL`, and CORS. GitHub Pages URL for this repo: **`https://nabeel5160.github.io/Chatbot/`** (live after you enable Pages → GitHub Actions and set the `VITE_API_BASE_URL` variable). Source: [github.com/Nabeel5160/Chatbot](https://github.com/Nabeel5160/Chatbot).
