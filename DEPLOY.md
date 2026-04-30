@@ -90,6 +90,23 @@ That almost always means **GitHub Pages is not enabled** or the source is still 
 
 **Private repository:** Free GitHub Pages from Actions normally expects a **public** repo. If the repo is private and Pages stays disabled or keeps failing, either make the repo **public** or use **Vercel / Netlify** for the frontend instead.
 
+### Common mistake: `VITE_API_BASE_URL` under **Environments**
+
+GitHub **Settings → Environments** lists things like `github-pages` and `Production`. It is **not** where the API URL goes.
+
+- **Wrong:** Creating an environment literally named `VITE_API_BASE_URL` (as in your Environments list).
+- **Right:** **Settings → Secrets and variables → Actions** → open the **Variables** tab (not *Environments*) → **New repository variable** → name `VITE_API_BASE_URL`, value `https://your-api.onrender.com`.
+
+You may **delete** the mistaken `VITE_API_BASE_URL` **environment** (trash icon) so it does not confuse future setup.
+
+### `github-pages` environment shows “1 protection rule”
+
+If deployments **wait forever** or fail after build, open **Environments → github-pages** and review **Deployment protection rules**. For a personal demo, remove **required reviewers** so Actions can publish without a manual approval. Then re-run the workflow.
+
+### If `https://nabeel5160.github.io/Chatbot/` shows only the README
+
+Pages is probably still using **Deploy from a branch** / default site, not the **Actions** artifact. Set **Pages → Source → GitHub Actions**, re-run **Deploy frontend to GitHub Pages**, and confirm the site loads the React app (3D orb + chat panel).
+
 ---
 
 ## 3) Frontend (Netlify)
