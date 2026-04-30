@@ -1,12 +1,16 @@
 # Publishes the Vite frontend to GitHub Pages.
 #
-# One-time repo setup:
-#   1) Settings → Pages → Build and deployment → Source: GitHub Actions
-#   2) Settings → Secrets and variables → Actions → Variables → New variable:
-#        VITE_API_BASE_URL = https://YOUR-API.onrender.com   (no trailing slash)
+# ---------------------------------------------------------------------------
+# REQUIRED FIRST (or deploy job fails with 404 / "Failed to create deployment"):
+#   https://github.com/Nabeel5160/Chatbot/settings/pages
+#   → Build and deployment → Source = "GitHub Actions" (NOT "Deploy from a branch")
+# ---------------------------------------------------------------------------
 #
-# Your site URL (after first successful run):
-#   https://<github-username>.github.io/Chatbot/
+# Also set (Actions → Variables):
+#   VITE_API_BASE_URL = https://YOUR-API.onrender.com   (no trailing slash)
+#
+# Site URL (after success):
+#   https://nabeel5160.github.io/Chatbot/
 #
 name: Deploy frontend to GitHub Pages
 
