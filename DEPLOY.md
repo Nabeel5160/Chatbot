@@ -72,10 +72,10 @@ Your public URL (after setup) will be:
 
 1. **API still on Render** (or another host)—GitHub Pages only serves **static files**, not Python.
 2. In the GitHub repo **[Nabeel5160/Chatbot](https://github.com/Nabeel5160/Chatbot)** → **Settings** → **Pages** → **Build and deployment** → **Source:** choose **GitHub Actions** (not “Deploy from a branch”).
-3. **Settings** → **Secrets and variables** → **Actions** → tab **Variables** → **New repository variable**:
+3. **Settings** → **Secrets and variables** → **Actions** → open the **Variables** tab (next to **Secrets**) → **New repository variable**:
    - Name: `VITE_API_BASE_URL`
    - Value: your API origin only, e.g. `https://your-service.onrender.com` (no trailing slash).
-4. Push to `main` (or open **Actions** → **Deploy frontend to GitHub Pages** → **Run workflow**). The workflow **`.github/workflows/deploy-github-pages.yml`** builds `frontend/` with `VITE_BASE_PATH=/Chatbot/` and publishes `dist`.
+4. **Different place:** leave **Settings** and use the **top row of the repository** (same level as **Code**, **Issues**, **Pull requests**). Click **Actions** there — *not* the “Actions” line under Settings → Secrets. In the left list pick **“Deploy frontend to GitHub Pages”**, then click **Run workflow** → **Run workflow** (or push any change to `main` under `frontend/`). That runs **`.github/workflows/deploy-github-pages.yml`**, builds `frontend/` with `VITE_BASE_PATH=/Chatbot/`, and publishes `dist` to Pages.
 5. On Render, set **`CORS_ORIGINS`** to include `https://nabeel5160.github.io` (or the exact Pages URL GitHub shows after deploy). Redeploy the API.
 
 If the Actions **deploy** job fails with a Pages permission error, confirm step 2 (Pages source = GitHub Actions).
