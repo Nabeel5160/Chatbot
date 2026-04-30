@@ -1,0 +1,61 @@
+# Publishes the Vite frontend to GitHub Pages.
+#
+# One-time repo setup:
+#   1) Settings → Pages → Build and deployment → Source: GitHub Actions
+#   2) Settings → Secrets and variables → Actions → Variables → New variable:
+#        VITE_API_BASE_URL = https://YOUR-API.onrender.com   (no trailing slash)
+#
+# Your site URL (after first successful run):
+#   https://<github-username>.github.io/Chatbot/
+#
+name: Deploy frontend to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy-github-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install and build
+        working-directory: frontend
+        env:
+          VITE_BASE_PATH: /Chatbot/
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+        run: npm ci && npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
