@@ -2,7 +2,8 @@
 
 Production-oriented Retrieval Augmented Generation (RAG) chatbot built with FastAPI, LangChain, OpenAI, and local Chroma.
 
-**Source repository:** [https://github.com/Nabeel5160/Chatbot.git](https://github.com/Nabeel5160/Chatbot.git)
+**Source repository:** [https://github.com/Nabeel5160/Chatbot.git](https://github.com/Nabeel5160/Chatbot.git)  
+*Last sync: routine push from development environment.*
 
 ## Features
 
