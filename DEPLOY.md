@@ -75,7 +75,7 @@ Your public URL (after setup) will be:
 3. **Settings** → **Secrets and variables** → **Actions** → tab **Variables** → **New repository variable**:
    - Name: `VITE_API_BASE_URL`
    - Value: your API origin only, e.g. `https://your-service.onrender.com` (no trailing slash).
-4. Push to `main` (or open **Actions** → **Deploy frontend to GitHub Pages** → **Run workflow**). The workflow **`.github/workflows/deploy-github-pages.yml`** builds `frontend/` with `VITE_BASE_PATH=/Chatbot/` and publishes `dist`.
+4. Push to `main` (or open **Actions** → **Deploy Vite app to Pages** → **Run workflow**). The workflow **`.github/workflows/pages.yml`** builds `frontend/` with `VITE_BASE_PATH=/Chatbot/` and publishes `dist` (not the repo README).
 5. On Render, set **`CORS_ORIGINS`** to include `https://nabeel5160.github.io` (or the exact Pages URL GitHub shows after deploy). Redeploy the API.
 
 If the Actions **deploy** job fails with a Pages permission error, confirm step 2 (Pages source = GitHub Actions).
@@ -86,7 +86,7 @@ That almost always means **GitHub Pages is not enabled** or the source is still 
 
 1. Open **[Pages settings for this repo](https://github.com/Nabeel5160/Chatbot/settings/pages)**.
 2. Under **Build and deployment**, set **Source** to **GitHub Actions** (pick it from the dropdown; do not leave “Deploy from a branch” selected).
-3. Save if prompted, wait a few seconds, then in **Actions** re-run the failed workflow (**Re-run all jobs**).
+3. Save if prompted, wait a few seconds, then in **Actions** re-run **Deploy Vite app to Pages** (**Re-run all jobs**).
 
 **Private repository:** Free GitHub Pages from Actions normally expects a **public** repo. If the repo is private and Pages stays disabled or keeps failing, either make the repo **public** or use **Vercel / Netlify** for the frontend instead.
 
@@ -103,9 +103,17 @@ You may **delete** the mistaken `VITE_API_BASE_URL` **environment** (trash icon)
 
 If deployments **wait forever** or fail after build, open **Environments → github-pages** and review **Deployment protection rules**. For a personal demo, remove **required reviewers** so Actions can publish without a manual approval. Then re-run the workflow.
 
-### If `https://nabeel5160.github.io/Chatbot/` shows only the README
+### If `https://nabeel5160.github.io/Chatbot/` shows only the README (long documentation text)
 
-Pages is probably still using **Deploy from a branch** / default site, not the **Actions** artifact. Set **Pages → Source → GitHub Actions**, re-run **Deploy frontend to GitHub Pages**, and confirm the site loads the React app (3D orb + chat panel).
+That means GitHub is **not** serving your Vite `dist` folder; it is serving a **Jekyll / default static** build (often from the whole repository, like GitHub’s suggested workflow with `path: '.'`).
+
+1. Go to **[Pages settings](https://github.com/Nabeel5160/Chatbot/settings/pages)**.
+2. **Build and deployment → Source:** **GitHub Actions**.
+3. Click **Configure** (or **Visit workflow**) and ensure the workflow tied to Pages is **`Deploy Vite app to Pages`** (file **`.github/workflows/pages.yml`**), **not** “Deploy static content to Pages” or any workflow that uploads the **entire repo**.
+4. In **Actions**, delete or disable any extra workflow that deploys Pages from `.` (repository root).
+5. Re-run **Deploy Vite app to Pages** on `main`.
+
+The deployed site must load **`index.html` from `frontend/dist`** (React root + `/Chatbot/assets/...` scripts). This repo’s workflow adds **`.nojekyll`** so GitHub does not run Jekyll on your static files.
 
 ---
 

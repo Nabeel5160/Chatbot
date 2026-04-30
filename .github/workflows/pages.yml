@@ -1,0 +1,69 @@
+# Deploy the React (Vite) frontend to GitHub Pages — NOT the repo README.
+#
+# In repo Settings → Pages → Build and deployment:
+#   Source = "GitHub Actions"
+#   Then choose THIS workflow ("Deploy Vite app to Pages" / pages.yml).
+# Do NOT use GitHub's suggested "Deploy static content" default if it uploads the whole repo (path: '.'),
+# or the site will show README instead of the chat UI.
+#
+# Variable (Settings → Secrets and variables → Actions → Variables):
+#   VITE_API_BASE_URL = https://your-api.onrender.com
+#
+name: Deploy Vite app to Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install and build frontend
+        working-directory: frontend
+        env:
+          VITE_BASE_PATH: /Chatbot/
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+        run: npm ci && npm run build
+
+      - name: Disable Jekyll (serve dist as plain static files)
+        run: touch frontend/dist/.nojekyll
+
+      - name: Verify SPA index (not README fallback)
+        run: |
+          test -f frontend/dist/index.html
+          grep -q '<div id="root"' frontend/dist/index.html || { echo "::error::dist/index.html missing React root"; exit 1; }
+          grep -q '/Chatbot/assets/' frontend/dist/index.html || { echo "::error::dist/index.html missing Vite asset paths"; exit 1; }
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
