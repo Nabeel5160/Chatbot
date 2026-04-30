@@ -5,6 +5,7 @@ __pycache__/
 .pytest_cache/
 chroma_db/
 data/embedding_cache.sqlite3
+stream_output.txt
 frontend/node_modules/
 frontend/dist/
 .cursor/
